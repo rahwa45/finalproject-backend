@@ -15,9 +15,6 @@ export const registerUser = async (req, res) => {
   }
 
   try {
-    // Clean up invalid data (documents with null email)
-    await User2.deleteMany({ email: null });
-
     // Check if the user already exists
     const existingUser = await User2.findOne({
       $or: [{ username }, { email }],
@@ -78,24 +75,15 @@ export const verifyUser = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Ensure user is not already verified
-    if (user.isVerified) {
-      return res.status(200).json({ message: "Email already verified" });
-    }
-
     // Update the user's verification status
     user.isVerified = true;
 
     await user.save(); // Save the updated user
 
-    // Fetch the user again to confirm the update
-    const updatedUser = await User2.findById(userId);
-    console.log("Updated user from DB:", updatedUser);
-
-    return res.status(200).json({ message: "Email verified successfully" });
+    res.status(200).json({ message: "Email verified successfully" });
   } catch (error) {
     console.error("Verification error:", error.message);
-    return res.status(400).json({ message: "Invalid or expired token" });
+    res.status(400).json({ message: "Invalid or expired token" });
   }
 };
 // Login User

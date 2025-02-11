@@ -8,10 +8,6 @@ import prescriptionRoutes from "./routes/prescriptionRoutes.js";
 import transactionRoutes from "./routes/transactionRoutes.js";
 import searchRoutes from "./routes/searchRoutes.js";
 
-//import transactionRoutes from "./routes/transactionRoutes.js";
-
-//Load environment variables
-
 dotenv.config();
 
 const app = express();
@@ -20,10 +16,7 @@ const app = express();
 
 app.use(cors());
 let corsOptions = {
-  origin: [
-    "https://finalprojectfrontend-lyart.vercel.app/",
-    "http://localhost:5173",
-  ],
+  origin: ["http://localhost:5173"],
   credentials: true,
 };
 app.use(express.json());
