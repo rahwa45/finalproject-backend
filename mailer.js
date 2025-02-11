@@ -13,7 +13,7 @@ const transporter = nodemailer.createTransport({
 });
 
 export const sendVerificationEmail = (email, token) => {
-  const verificationLink = `https://finalprojectfrontend-hnck.vercel.app/verify?token=${token}`;
+  const verificationLink = `http://localhost:5173/verify?token=${token}`;
 
   const mailOptions = {
     from: process.env.EMAIL_USER,
@@ -21,7 +21,7 @@ export const sendVerificationEmail = (email, token) => {
     subject: "Email Verification",
     text: `Please verify your email by clicking on the following link: ${verificationLink}`,
     html: `<p>Please verify your email by clicking on the following link:</p>
-    <a href="${verificationLink}">${verificationLink}</a>`,
+    <a href="${verificationLink}">here</a>`,
   };
 
   transporter.sendMail(mailOptions, (error, info) => {
