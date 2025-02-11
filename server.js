@@ -20,7 +20,10 @@ const app = express();
 
 app.use(cors());
 let corsOptions = {
-  origin: ["http://localhost:5173"],
+  origin: [
+    "https://finalprojectfrontend-lyart.vercel.app/",
+    "http://localhost:5173",
+  ],
   credentials: true,
 };
 app.use(express.json());
