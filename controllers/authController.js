@@ -85,6 +85,7 @@ export const verifyUser = async (req, res) => {
 
     // Update the user's verification status
     user.isVerified = true;
+
     await user.save(); // Save the updated user
 
     // Fetch the user again to confirm the update
