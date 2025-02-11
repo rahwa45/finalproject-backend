@@ -19,9 +19,7 @@ export const sendVerificationEmail = (email, token) => {
     from: process.env.EMAIL_USER,
     to: email,
     subject: "Email Verification",
-    text: `Please verify your email by clicking on the following link: ${verificationLink}`,
-    html: `<p>Please verify your email by clicking on the following link:</p>
-    <a href="${verificationLink}">here</a>`,
+    html: `<p>Click <a href="${verificationLink}">here</a> to verify your email.</p>`,
   };
 
   transporter.sendMail(mailOptions, (error, info) => {
