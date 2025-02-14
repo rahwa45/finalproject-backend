@@ -5,8 +5,6 @@ import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import drugRoutes from "./routes/drugRoutes.js";
 import prescriptionRoutes from "./routes/prescriptionRoutes.js";
-import transactionRoutes from "./routes/transactionRoutes.js";
-import searchRoutes from "./routes/searchRoutes.js";
 
 dotenv.config();
 
@@ -31,8 +29,6 @@ connectDB();
 app.use("/api/auth", authRoutes);
 app.use("/api/drugs", drugRoutes);
 app.use("/api/prescriptions", prescriptionRoutes);
-app.use("/api/transactions", transactionRoutes);
-app.use("/api/search", searchRoutes);
 
 app.get("/", (req, res) => {
   res.status(200).json({ message: "Server is up and running!" });
