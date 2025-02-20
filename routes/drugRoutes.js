@@ -3,7 +3,7 @@ import { verifyToken } from "../authMiddleware.js";
 import {
   getDrugs,
   getDrugById,
-  addDrug,
+  addDrugs,
   updateDrug,
   deleteDrug,
 } from "../controllers/drugController.js";
@@ -12,7 +12,7 @@ const router = express.Router();
 
 router.get("/", verifyToken, getDrugs);
 router.get("/:id", verifyToken, getDrugById);
-router.post("/", verifyToken, addDrug);
+router.post("/", verifyToken, addDrugs);
 router.put("/:id", verifyToken, updateDrug);
 router.delete("/:id", verifyToken, deleteDrug);
 

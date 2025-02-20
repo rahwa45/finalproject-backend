@@ -3,8 +3,18 @@ import Drug from "../models/drugModel.js";
 // Get all drugs
 export const getDrugs = async (req, res) => {
   try {
-    const drugs = await Drug.find();
-    res.status(200).json(drugs);
+    const { query } = req.query; // Get search term from request
+
+    let drugs;
+    if (query) {
+      // If there's a search query, filter drugs by name (case-insensitive)
+      drugs = await Drug.find({ name: { $regex: query, $options: "i" } });
+    } else {
+      // If no search query, return all drugs
+      drugs = await Drug.find();
+    }
+
+    res.status(200).json(drugs); // Send drugs as an array
   } catch (error) {
     res.status(500).json({ message: "Error fetching drugs" });
   }
@@ -21,18 +31,26 @@ export const getDrugById = async (req, res) => {
   }
 };
 
-// Add a new drug
-export const addDrug = async (req, res) => {
-  const { name, quantity, price } = req.body;
-
+// Backend code to handle multiple drugs
+export const addDrugs = async (req, res) => {
+  console.log(req.body);
   try {
-    const drug = await Drug.create({ name, quantity, price });
-    res.status(201).json(drug);
+    if (!req.body.name || !req.body.quantity || !req.body.price) {
+      return res.status(400).send({
+        message: "Send all required fields",
+      });
+    }
+    const newDrug = {
+      name: req.body.name,
+      quantity: req.body.quantity,
+      price: req.body.price,
+    };
+    const drug = await Drug.create(newDrug);
+    return res.status(201).send(drug);
   } catch (error) {
-    res.status(500).json({ message: "Error adding drug" });
+    res.status(500).send({ message: error.message });
   }
 };
-
 // Update drug details
 export const updateDrug = async (req, res) => {
   try {
