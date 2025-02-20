@@ -5,14 +5,13 @@ import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import drugRoutes from "./routes/drugRoutes.js";
 import prescriptionRoutes from "./routes/prescriptionRoutes.js";
-import bodyParser from "body-parser";
 
 dotenv.config();
 
 const app = express();
 
 //Middleware
-app.use(bodyParser.json());
+
 app.use(cors());
 let corsOptions = {
   origin: [
