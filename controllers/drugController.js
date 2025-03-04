@@ -35,13 +35,7 @@ export const getDrugById = async (req, res) => {
 export const addDrugs = async (req, res) => {
   console.log(req.body);
   try {
-    if (
-      !req.body.name ||
-      !req.body.quantity ||
-      !req.body.price ||
-      !expiryDate ||
-      !manufacturer
-    ) {
+    if (!req.body.name || !req.body.quantity || !req.body.price) {
       return res.status(400).send({
         message: "Send all required fields",
       });
@@ -50,8 +44,6 @@ export const addDrugs = async (req, res) => {
       name: req.body.name,
       quantity: req.body.quantity,
       price: req.body.price,
-      expiryDate: new Date(req.body.expiryDate),
-      manufacturer: req.body.manufacturer,
     };
     const drug = await Drug.create(newDrug);
     return res.status(201).send(drug);
@@ -62,13 +54,7 @@ export const addDrugs = async (req, res) => {
 // Update drug details
 export const updateDrug = async (req, res) => {
   try {
-    if (
-      !req.body.name ||
-      !req.body.quantity ||
-      !req.body.price ||
-      !expiryDate ||
-      !manufacture
-    ) {
+    if (!req.body.name || !req.body.quantity || !req.body.price) {
       return res.status(400).send({
         message: "Send All Requerd Fields",
       });
