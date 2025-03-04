@@ -50,7 +50,7 @@ export const addDrugs = async (req, res) => {
       name: req.body.name,
       quantity: req.body.quantity,
       price: req.body.price,
-      expiryDate: req.body.expiryDate,
+      expiryDate: new Date(req.body.expiryDate),
       manufacturer: req.body.manufacturer,
     };
     const drug = await Drug.create(newDrug);
