@@ -11,6 +11,7 @@ const transporter = nodemailer.createTransport({
   debug: true,
   logger: true,
 });
+
 const frontendURL = process.env.CLIENT_URL;
 
 // ✅ Send verification email
@@ -33,9 +34,9 @@ export const sendVerificationEmail = (email, token) => {
   });
 };
 
-// ✅ Send password reset email
-export const sendResetPasswordEmail = async (email, token) => {
-  const resetLink = `${frontendURL}/reset-password?token=${token}`;
+// ✅ Send password reset email (UPDATED)
+export const sendResetPasswordEmail = async (email, token, id) => {
+  const resetLink = `${frontendURL}/reset-password?token=${token}&id=${id}`;
 
   const mailOptions = {
     from: process.env.EMAIL_USER,

@@ -15,7 +15,7 @@ const app = express();
 app.use(cors());
 let corsOptions = {
   origin: [
-    "https://finalprojectfrontend-hnck.vercel.app/",
+    "https://finalprojectfrontend-hnck.vercel.app",
     "http://localhost:5173",
   ],
   credentials: true,

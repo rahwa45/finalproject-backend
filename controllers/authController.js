@@ -25,7 +25,7 @@ export const forgotPassword = async (req, res) => {
 
     // Send reset email
     const resetLink = `${process.env.CLIENT_URL}/reset-password?token=${token}&id=${user._id}`;
-    await sendResetPasswordEmail(email, resetLink);
+    await sendResetPasswordEmail(email, token, user._id); // ✅ Correct
 
     res.status(200).json({ message: "Reset email sent" });
   } catch (error) {
@@ -35,6 +35,8 @@ export const forgotPassword = async (req, res) => {
 // Reset Password ✅ (Place this here)
 export const resetPassword = async (req, res) => {
   const { token, id, newPassword } = req.body;
+  console.log("Request Body:", req.body); // Log the request body
+  console.log("Request Headers:", req.headers); // Log the request headers
 
   try {
     const user = await User2.findById(id);
