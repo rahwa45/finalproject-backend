@@ -3,8 +3,59 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import bcrypt from "bcryptjs";
 import { sendVerificationEmail } from "../mailer.js";
+import crypto from "crypto";
+import { sendResetPasswordEmail } from "../mailer.js"; // You need to create this function
 
 dotenv.config();
+export const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+
+  if (!email) return res.status(400).json({ message: "Email is required" });
+
+  try {
+    const user = await User2.findOne({ email });
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    const token = crypto.randomBytes(32).toString("hex");
+
+    // Save the token + expiration on the user
+    user.resetToken = token;
+    user.resetTokenExpiry = Date.now() + 3600000; // 1 hour
+    await user.save();
+
+    // Send reset email
+    const resetLink = `${process.env.CLIENT_URL}/reset-password?token=${token}&id=${user._id}`;
+    await sendResetPasswordEmail(email, resetLink);
+
+    res.status(200).json({ message: "Reset email sent" });
+  } catch (error) {
+    res.status(500).json({ message: "Server error: " + error.message });
+  }
+};
+// Reset Password ✅ (Place this here)
+export const resetPassword = async (req, res) => {
+  const { token, id, newPassword } = req.body;
+
+  try {
+    const user = await User2.findById(id);
+    if (
+      !user ||
+      user.resetToken !== token ||
+      user.resetTokenExpiry < Date.now()
+    ) {
+      return res.status(400).json({ message: "Invalid or expired token" });
+    }
+
+    user.password = await bcrypt.hash(newPassword, 10);
+    user.resetToken = undefined;
+    user.resetTokenExpiry = undefined;
+    await user.save();
+
+    res.status(200).json({ message: "Password reset successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Server error: " + error.message });
+  }
+};
 
 // Register User
 export const registerUser = async (req, res) => {

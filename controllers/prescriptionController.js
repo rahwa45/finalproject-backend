@@ -26,6 +26,7 @@ export const addPrescription = async (req, res) => {
     const prescription = await Prescription.create({
       patientName,
       drugDetails,
+      status,
     });
     res.status(201).json(prescription);
   } catch (error) {

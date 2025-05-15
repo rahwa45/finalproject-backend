@@ -8,12 +8,14 @@ const transporter = nodemailer.createTransport({
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
-  debug: true, // Include debugging information in logs
-  logger: true, // Log to console
+  debug: true,
+  logger: true,
 });
+const frontendURL = process.env.CLIENT_URL;
 
+// ✅ Send verification email
 export const sendVerificationEmail = (email, token) => {
-  const verificationLink = `https://finalprojectfrontend-hnck.vercel.app/verify?token=${token}`;
+  const verificationLink = `${frontendURL}/verify?token=${token}`;
 
   const mailOptions = {
     from: process.env.EMAIL_USER,
@@ -24,9 +26,32 @@ export const sendVerificationEmail = (email, token) => {
 
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-      console.log("Error sending email: ", error);
+      console.log("Error sending verification email: ", error);
     } else {
       console.log("Verification email sent: ", info.response);
     }
   });
+};
+
+// ✅ Send password reset email
+export const sendResetPasswordEmail = async (email, token) => {
+  const resetLink = `${frontendURL}/reset-password?token=${token}`;
+
+  const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to: email,
+    subject: "Reset Your Password",
+    html: `
+      <p>Click the link below to reset your password:</p>
+      <a href="${resetLink}">Reset Password</a>
+      <p>This link will expire in 1 hour.</p>
+    `,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    console.log("Password reset email sent.");
+  } catch (error) {
+    console.error("Error sending password reset email:", error);
+  }
 };
